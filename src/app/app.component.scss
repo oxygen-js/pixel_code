@@ -4,4 +4,8 @@
   align-items: center;
   flex-direction: column;
   justify-content: space-between;
+
+  router-outlet {
+    display: none;
+  }
 }

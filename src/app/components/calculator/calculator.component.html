@@ -1,1 +1,35 @@
-<p>calculator works!</p>
+<div class="container-center">
+
+  <div class="nes-container is-rounded calc">
+    <div class="nes-container is-rounded result"
+         [class.middle_size]="value.length > 7"
+         [class.small_size]="value.length > 24">
+      {{ value }}
+    </div>
+
+    <div class="buttons">
+      <button class="nes-btn" (click)="setValue('(')">(</button>
+      <button class="nes-btn" (click)="setValue(')')">)</button>
+      <button class="nes-btn" (click)="setValue('%')">%</button>
+      <button class="nes-btn is-error" (click)="allClear()">AC</button>
+      <button class="nes-btn" (click)="setValue('7')">7</button>
+      <button class="nes-btn" (click)="setValue('8')">8</button>
+      <button class="nes-btn" (click)="setValue('9')">9</button>
+      <button class="nes-btn" (click)="setValue('/')">/</button>
+      <button class="nes-btn" (click)="setValue('4')">4</button>
+      <button class="nes-btn" (click)="setValue('5')">5</button>
+      <button class="nes-btn" (click)="setValue('6')">6</button>
+      <button class="nes-btn" (click)="setValue('*')">*</button>
+      <button class="nes-btn" (click)="setValue('1')">1</button>
+      <button class="nes-btn" (click)="setValue('2')">2</button>
+      <button class="nes-btn" (click)="setValue('3')">3</button>
+      <button class="nes-btn" (click)="setValue('-')">-</button>
+      <button class="nes-btn" (click)="setValue('0')">0</button>
+      <button class="nes-btn" (click)="setValue('.')">.</button>
+      <button class="nes-btn is-success" (click)="calculate()">=</button>
+      <button class="nes-btn" (click)="setValue('+')">+</button>
+    </div>
+
+  </div>
+
+</div>
