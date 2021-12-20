@@ -1,0 +1,13 @@
+:host {
+  display: block;
+
+  .nes-field {
+    margin-bottom: 30px;
+  }
+
+  .buttons {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+  }
+}

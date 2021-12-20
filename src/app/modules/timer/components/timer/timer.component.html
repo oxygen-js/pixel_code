@@ -1,0 +1,9 @@
+<h2>
+  {{ time | date: "HH:mm:ss" }}
+</h2>
+
+<button (click)="addSeconds(10)">+10s</button>
+<button (click)="addMinutes(1)">+1m</button>
+<button (click)="addMinutes(10)">+10m</button>
+<button (click)="addMinutes(30)">+30m</button>
+<button (click)="addHour(1)">+1h</button>

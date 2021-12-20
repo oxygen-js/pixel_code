@@ -1,0 +1,39 @@
+@import "../../../../variables-styles/color";
+
+:host {
+  .calc {
+    width: 480px;
+    background: #2E4C6D;
+
+    .result {
+      height: 112px;
+      font-size: 48px;
+      text-align: right;
+      min-height: 112px;
+      word-break: break-word;
+      background: $white-block;
+
+      &.middle_size {
+        font-size: 30px;
+      }
+
+      &.small_size {
+        font-size: 15px;
+      }
+    }
+
+    .buttons {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+
+      button {
+        width: 90px;
+        height: 85px;
+        font-size: 28px;
+        margin-top: 15px;
+      }
+    }
+  }
+}
