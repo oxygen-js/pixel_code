@@ -9,7 +9,7 @@ import {environment} from 'src/environments/environment';
 import {AppRoutingModule} from './app-routing.module';
 import {EXPORT_MODULES} from "./modules/export.module";
 import {AppComponent} from './app.component';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import {NoopAnimationsModule} from '@angular/platform-browser/animations';
 import {FormsModule} from "@angular/forms";
 
 @NgModule({

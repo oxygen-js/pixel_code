@@ -1,13 +1,17 @@
 <form action="">
   <p class="title">Auth</p>
+  <p>
+    Account missing?
+    <span class="nes-text is-primary sign-up" (click)="openDialogSighUp()"> Sign up </span>
+  </p>
   <div class="nes-field">
     <label for="email">Email</label>
-    <input type="email" id="email" class="nes-input" [(ngModel)]="loginForm.login" />
+    <input type="email" id="email" class="nes-input" name="login" [(ngModel)]="loginForm.login" />
   </div>
 
   <div class="nes-field">
     <label for="password">Password</label>
-    <input type="password" id="password" class="nes-input" [(ngModel)]="loginForm.password" />
+    <input type="password" id="password" class="nes-input" name="password" [(ngModel)]="loginForm.password" />
   </div>
 
   <div class="buttons">

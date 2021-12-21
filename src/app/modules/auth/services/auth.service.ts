@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
-import {AngularFireAuth} from "@angular/fire/compat/auth";
-import firebase from "firebase/compat";
 import {Router} from "@angular/router";
+import {AngularFireAuth} from "@angular/fire/compat/auth";
 import {AngularFirestore} from "@angular/fire/compat/firestore";
+import firebase from "firebase/compat";
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  userData: firebase.User;
+  userData: firebase.User | undefined;
 
   constructor(
     private route: Router,
@@ -27,11 +27,37 @@ export class AuthService {
     })
   }
 
-  // https://www.positronx.io/full-angular-7-firebase-authentication-system/
-  signIn(email: string, password: string) {
-    return this.afAuth.signInWithEmailAndPassword(email, password)
-      .then((result) => {
-        this.route.navigate(['calc'])
-      })
+  // signIn(email: string, password: string) {
+  //   return this.afAuth.signInWithEmailAndPassword(email, password)
+  //     .then((result) => {
+  //       this.route.navigate(['calc']);
+  //     })
+  //     .catch(error => {
+  //       console.error(error);
+  //     })
+  // }
+  //
+  // signUp(email: string, password: string) {
+  //   return this.afAuth.createUserWithEmailAndPassword(email, password)
+  //     .then((res) => {
+  //       console.log("Created User", res)
+  //     })
+  //     .catch((error) => {
+  //       console.log("Failed create user", error);
+  //     })
+  // }
+  //
+  // signOut() {
+  //   return this.afAuth.signOut()
+  //     .then(() => {
+  //       localStorage.removeItem("user");
+  //       this.route.navigate(["timer"]);
+  //     })
+  // }
+
+
+  // ?
+  setUserData() {
+
   }
 }

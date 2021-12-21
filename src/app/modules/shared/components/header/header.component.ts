@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {MatDialog} from "@angular/material/dialog";
-import {AuthComponent} from "../../../auth/components/auth/auth.component";
+import {AuthDialogComponent} from "../../../auth/components/auth-dialog/auth-dialog.component";
 
 @Component({
   selector: 'app-header',
@@ -18,6 +18,6 @@ export class HeaderComponent implements OnInit {
   }
 
   openAuthDialog() {
-    this._dialog.open(AuthComponent);
+    this._dialog.open(AuthDialogComponent);
   }
 }

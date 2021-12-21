@@ -1,19 +1,27 @@
 import {NgModule} from '@angular/core';
-import {CommonModule} from '@angular/common';
-import {AuthComponent} from "./components/auth/auth.component";
 import {FormsModule} from "@angular/forms";
+import {CommonModule} from '@angular/common';
+import {AngularFirestore} from "@angular/fire/compat/firestore";
+import {RegisterDialogComponent} from './components/register-dialog/register-dialog.component';
+import {AuthDialogComponent} from "./components/auth-dialog/auth-dialog.component";
+import {AngularFireAuth} from "@angular/fire/compat/auth";
 
 
 @NgModule({
   declarations: [
-    AuthComponent
+    AuthDialogComponent,
+    RegisterDialogComponent,
   ],
-    imports: [
-        CommonModule,
-        FormsModule
-    ],
+  imports: [
+    CommonModule,
+    FormsModule
+  ],
+  providers: [
+    AngularFirestore,
+    AngularFireAuth
+  ],
   exports: [
-    AuthComponent
+    AuthDialogComponent
   ]
 })
 export class AuthModule {
