@@ -12,7 +12,7 @@ import {RegisterDialogComponent} from "../register-dialog/register-dialog.compon
 export class AuthDialogComponent implements OnInit {
 
   loginForm: AuthDto = {
-    login: "",
+    email: "",
     password: ""
   }
 
