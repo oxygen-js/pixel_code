@@ -1,22 +1,28 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import {AuthDto} from "../../models/auth.dto";
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {MatDialog, MatDialogRef} from "@angular/material/dialog";
 import {AuthDialogComponent} from "../auth-dialog/auth-dialog.component";
 import {AuthService} from "../../services/auth.service";
 import {RegisterDto} from "../../models/register.dto";
+import {Subject} from "rxjs";
+import {takeUntil} from "rxjs/operators";
+import firebase from "firebase/compat";
 
 @Component({
   selector: 'app-register-dialog',
   templateUrl: './register-dialog.component.html',
-  styleUrls: ['./register-dialog.component.scss']
+  styleUrls: ['./register-dialog.component.scss'],
+  providers: [AuthService]
 })
-export class RegisterDialogComponent implements OnInit {
+export class RegisterDialogComponent implements OnInit, OnDestroy {
 
+  private _destroyed$ = new Subject();
+
+  error: firebase.FirebaseError | null = null;
   loginForm: RegisterDto = {
     email: "",
     password: "",
     confirmPassword: ""
-  }
+  };
 
   constructor(
     private _dialog: MatDialog,
@@ -27,20 +33,26 @@ export class RegisterDialogComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this._authService.errorSub$.pipe(
+      takeUntil(this._destroyed$)
+    ).subscribe(error => this.error = error);
   }
 
-  openDialogSignIn() {
+  ngOnDestroy(): void {
+    this._destroyed$.next();
+    this._destroyed$.complete();
+  }
+
+  openDialogSignIn(): void {
     this._dialogRef.close();
     this._dialog.open(AuthDialogComponent);
   }
 
-  closeDialog() {
+  closeDialog(): void {
     this._dialogRef.close();
   }
 
-  signUp() {
-    this._authService.signUp(this.loginForm.email, this.loginForm.password)
-      .then(res => console.log("Register component \"res\" - ", res))
-      .catch(error => console.error("Register component \"error\" - ", error));
+  signUp(): void {
+    this._authService.signUp(this.loginForm);
   }
 }

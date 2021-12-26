@@ -4,54 +4,107 @@
     Have an account?
     <span class="nes-text is-primary sign-up" (click)="openDialogSignIn()"> Sign in </span>
   </p>
-  <div class="nes-field">
+
+  <div class="nes-field email">
     <label for="email">Email</label>
     <input type="email"
+           required
            id="email"
            name="login"
            class="nes-input"
-           required
+           autocomplete="email"
            #email="ngModel"
            [maxlength]="128"
-           [(ngModel)]="loginForm.email" />
+           [(ngModel)]="loginForm.email"
+           [class.is-error]="email.invalid && (email.touched && email.dirty) || error?.code === 'auth/invalid-email'"/>
+
+    <div class="errors">
+      <div class="errors-fields" *ngIf="email.invalid && (email.touched && email.dirty)">
+        <div class="nes-text is-error" *ngIf="email.errors">
+          <div class="error" *ngIf="email.errors?.required">
+            Field required
+          </div>
+        </div>
+      </div>
+      <div class="invalid-email" *ngIf="error?.code === 'auth/invalid-email'">
+        <div class="nes-text is-error error">
+          Invalid email
+        </div>
+      </div>
+    </div>
+
   </div>
 
-  <div class="nes-field">
+  <div class="nes-field password">
     <label for="password">Password</label>
     <input type="password"
-           id="password"
-           class="nes-input"
-           name="password"
            required
+           id="password"
+           name="password"
+           class="nes-input"
+           autocomplete="password"
            #password="ngModel"
            minlength="6"
            maxLength="25"
-           [(ngModel)]="loginForm.password" />
-    {{password.invalid}}
-    {{password.touched}}
-    {{password.dirty}}
-    {{password.errors | json}}
-    <div class="errors" *ngIf="password.invalid && (password.touched && password.dirty)">
-      error
+           [(ngModel)]="loginForm.password"
+           [class.is-error]="password.invalid && (password.touched && password.dirty) || error?.code === 'password_mismatch'" />
+
+    <div class="errors">
+      <div class="errors-fields" *ngIf="password.invalid && (password.touched && password.dirty)">
+        <div class="nes-text is-error min-length" *ngIf="password.errors?.minlength">
+          Minimum length: {{ password.errors?.minlength.requiredLength | number }} symbols
+        </div>
+        <div class="nes-text is-error min-length" *ngIf="password.errors?.required">
+          Field required
+        </div>
+      </div>
+      <div class="nes-text is-error password-mismatch" *ngIf="error?.code === 'password_mismatch'">
+        {{ error?.message }}
+      </div>
     </div>
+
   </div>
 
-  <div class="nes-field">
+  <div class="nes-field password">
     <label for="confirm_password">Confirm Password</label>
     <input type="password"
+           required
            class="nes-input"
            id="confirm_password"
            name="confirm_password"
-           required
+           autocomplete="confirm_password"
            #confirmPassword="ngModel"
            minlength="6"
            maxLength="25"
-           [(ngModel)]="loginForm.confirmPassword" />
+           [(ngModel)]="loginForm.confirmPassword"
+           [class.is-error]="confirmPassword.invalid && (confirmPassword.touched && confirmPassword.dirty) || error?.code === 'password_mismatch'"/>
+
+    <div class="errors">
+      <div class="errors-fields" *ngIf="confirmPassword.invalid && (confirmPassword.touched && confirmPassword.dirty)">
+        <div class="nes-text is-error min-length" *ngIf="confirmPassword.errors?.minlength">
+          Minimum length: {{ confirmPassword.errors?.minlength.requiredLength | number }} symbols
+        </div>
+        <div class="nes-text is-error min-length" *ngIf="confirmPassword.errors?.required">
+          Field required
+        </div>
+      </div>
+      <div class="nes-text is-error password-mismatch" *ngIf="error?.code === 'password_mismatch'">
+        {{ error?.message }}
+      </div>
+    </div>
+
   </div>
 
   <div class="buttons">
     <button class="nes-btn" (click)="closeDialog()"> Cancel </button>
-    <button type="submit" class="nes-btn is-primary" (click)="signUp()"> Sign up </button>
+    <button
+      type="submit"
+      class="nes-btn is-primary"
+      (click)="signUp()"
+      [class.is-disabled]="password.invalid || confirmPassword.invalid || email.invalid"
+      [disabled]="password.invalid || confirmPassword.invalid || email.invalid">
+      Sign up
+    </button>
   </div>
 
 </form>

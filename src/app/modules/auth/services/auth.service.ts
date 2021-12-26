@@ -3,11 +3,19 @@ import {Router} from "@angular/router";
 import {AngularFireAuth} from "@angular/fire/compat/auth";
 import {AngularFirestore} from "@angular/fire/compat/firestore";
 import firebase from "firebase/compat";
+import {BehaviorSubject} from "rxjs";
+import {RegisterDto} from "../models/register.dto";
+import UserCredential = firebase.auth.UserCredential;
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class AuthService {
+
+  errorSub$ = new BehaviorSubject(<firebase.FirebaseError>{
+    code: "",
+    name: 'FirebaseError',
+    message: ""
+  });
+
   userData: firebase.User | undefined;
 
   constructor(
@@ -19,12 +27,10 @@ export class AuthService {
       if (user) {
         this.userData = user;
         localStorage.setItem("user", JSON.stringify(user));
-        // JSON.parse(<string>localStorage.getItem("user"));
       } else {
         localStorage.setItem("user", "");
-        // JSON.parse(<string>localStorage.getItem("user"));
       }
-    })
+    });
   }
 
   signIn(email: string, password: string) {
@@ -37,14 +43,17 @@ export class AuthService {
       })
   }
 
-  signUp(email: string, password: string) {
-    return this.afAuth.createUserWithEmailAndPassword(email, password)
-      .then((res) => {
-        console.log("Created User (authService)", res)
-      })
-      .catch((error) => {
-        console.log("Failed create user (authService)", error);
-      })
+  signUp(auth: RegisterDto): Promise<UserCredential | void> | void {
+    if (auth.password !== auth.confirmPassword) {
+      return this.errorSub$.next({
+        code: "password_mismatch",
+        name: "FirebaseError",
+        message: "Password mismatch"
+      });
+    }
+    return this.afAuth.createUserWithEmailAndPassword(auth.email, auth.password)
+      .then((res) => console.log("Created User (authService)", res))
+      .catch(error => this.errorSub$.next(error))
   }
 
   signOut() {
@@ -55,9 +64,4 @@ export class AuthService {
       })
   }
 
-
-  // ?
-  setUserData() {
-
-  }
 }
