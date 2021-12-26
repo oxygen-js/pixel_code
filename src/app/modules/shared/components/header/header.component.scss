@@ -1,4 +1,4 @@
-@import "../../global-style/color";
+@import "../../../../variables-styles/color";
 
 :host {
   .content {
@@ -23,6 +23,14 @@
 
       li {
         margin-left: 36px;
+
+        .auth-btn {
+          color: #209cee;
+
+          &:hover {
+            text-decoration: underline;
+          }
+        }
 
         &:first-child {
           margin-left: 0;
