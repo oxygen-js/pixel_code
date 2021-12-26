@@ -1,0 +1,57 @@
+<form action="">
+  <p class="title">Sign Up</p>
+  <p class="description">
+    Have an account?
+    <span class="nes-text is-primary sign-up" (click)="openDialogSignIn()"> Sign in </span>
+  </p>
+  <div class="nes-field">
+    <label for="email">Email</label>
+    <input type="email"
+           id="email"
+           name="login"
+           class="nes-input"
+           required
+           #email="ngModel"
+           [maxlength]="128"
+           [(ngModel)]="loginForm.email" />
+  </div>
+
+  <div class="nes-field">
+    <label for="password">Password</label>
+    <input type="password"
+           id="password"
+           class="nes-input"
+           name="password"
+           required
+           #password="ngModel"
+           minlength="6"
+           maxLength="25"
+           [(ngModel)]="loginForm.password" />
+    {{password.invalid}}
+    {{password.touched}}
+    {{password.dirty}}
+    {{password.errors | json}}
+    <div class="errors" *ngIf="password.invalid && (password.touched && password.dirty)">
+      error
+    </div>
+  </div>
+
+  <div class="nes-field">
+    <label for="confirm_password">Confirm Password</label>
+    <input type="password"
+           class="nes-input"
+           id="confirm_password"
+           name="confirm_password"
+           required
+           #confirmPassword="ngModel"
+           minlength="6"
+           maxLength="25"
+           [(ngModel)]="loginForm.confirmPassword" />
+  </div>
+
+  <div class="buttons">
+    <button class="nes-btn" (click)="closeDialog()"> Cancel </button>
+    <button type="submit" class="nes-btn is-primary" (click)="signUp()"> Sign up </button>
+  </div>
+
+</form>
