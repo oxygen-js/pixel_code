@@ -1,13 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import {MatDialog, MatDialogRef} from "@angular/material/dialog";
 import {AuthDto} from "../../models/auth.dto";
-import {AuthService} from "../../services/auth.service";
 import {RegisterDialogComponent} from "../register-dialog/register-dialog.component";
+import { ResetPasswordDialogComponent } from '../reset-password-dialog/reset-password-dialog.component';
+import {AuthService} from "../../services/auth/auth.service";
 
 @Component({
   selector: 'app-auth-dialog',
   templateUrl: './auth-dialog.component.html',
-  styleUrls: ['./auth-dialog.component.scss']
+  styleUrls: ['./auth-dialog.component.scss'],
+  providers: [AuthService]
 })
 export class AuthDialogComponent implements OnInit {
 
@@ -25,11 +27,21 @@ export class AuthDialogComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  closeDialog() {
+  auth(): void {
+    this._authService.signIn(this.loginForm);
+  }
+
+
+  closeDialog(): void {
     this._dialogRef.close();
   }
 
-  openDialogSighUp() {
+  resetPassword():void {
+    this._dialogRef.close();
+    this._dialog.open(ResetPasswordDialogComponent);
+  }
+
+  openDialogSighUp(): void {
     this._dialogRef.close();
     this._dialog.open(RegisterDialogComponent);
   }

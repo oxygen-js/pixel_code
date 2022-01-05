@@ -1,5 +1,10 @@
 :host {
   display: block;
+  width: 460px;
+
+  .title {
+    margin-bottom: 1rem;        
+  }
 
   .description {
     margin-bottom: 35px;

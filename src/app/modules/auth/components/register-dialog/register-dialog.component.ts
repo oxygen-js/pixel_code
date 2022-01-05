@@ -1,7 +1,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {MatDialog, MatDialogRef} from "@angular/material/dialog";
 import {AuthDialogComponent} from "../auth-dialog/auth-dialog.component";
-import {AuthService} from "../../services/auth.service";
+import {AuthService} from "../../services/auth/auth.service";
 import {RegisterDto} from "../../models/register.dto";
 import {Subject} from "rxjs";
 import {takeUntil} from "rxjs/operators";
