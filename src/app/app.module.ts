@@ -1,6 +1,5 @@
 import {NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
-import {initializeApp, provideFirebaseApp} from '@angular/fire/app';
 import {provideAuth, getAuth} from '@angular/fire/auth';
 import {provideDatabase, getDatabase} from '@angular/fire/database';
 import {getFirestore, provideFirestore} from "@angular/fire/firestore";
