@@ -20,14 +20,14 @@ export class AuthDialogComponent implements OnInit {
   readonly password$ = this._componentStore.select(state => state.password);
   readonly error$ = this._componentStore.select(state => state.error);
 
-  readonly setEmail = this._componentStore.updater((state, email: any) => ({
+  readonly setEmail = this._componentStore.updater((state, email: string) => ({
     ...state,
-    email: email.target.value
+    email
   }));
 
-  readonly setPassword = this._componentStore.updater((state, password: any) => ({
+  readonly setPassword = this._componentStore.updater((state, password: string) => ({
     ...state,
-    password: password.target.value
+    password
   }));
 
   readonly setError = this._componentStore.updater((state, error: any) => ({

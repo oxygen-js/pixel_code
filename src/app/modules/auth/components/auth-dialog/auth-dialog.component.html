@@ -20,6 +20,8 @@
     <input type="password" id="password" class="nes-input" name="password" required (keypress)="inputPassword($event)"/>
   </div>
 
+  <app-auth-error *ngIf="error$ | async" [error]="error$ | async"></app-auth-error>
+
   <div class="buttons">
     <button class="nes-btn" (click)="closeDialog()"> Cancel</button>
     <button type="submit" class="nes-btn is-primary" (click)="signIn()"> Sign in </button>
