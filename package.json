@@ -23,6 +23,7 @@
     "@angular/router": "~12.2.0",
     "@ngrx/component-store": "^13.0.2",
     "@ngrx/store": "^13.0.2",
+    "eslint-config-airbnb": "^19.0.4",
     "firebase": "^9.4.0",
     "firebase-tools": "^9.23.3",
     "ngrx": "^0.0.1-security",

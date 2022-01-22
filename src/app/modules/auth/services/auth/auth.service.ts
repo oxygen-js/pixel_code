@@ -44,8 +44,7 @@ export class AuthService {
 
   signIn(email: string, password: string) {
     return this._afAuth.signInWithEmailAndPassword(email, password)
-      .then((user) => this.setUserCredential(user))
-      .catch(error => console.error(error));
+      .then((user) => this.setUserCredential(user));
   }
 
   signUp(auth: RegisterDto): Promise<UserCredential | void> | void {

@@ -6,6 +6,7 @@ import {AuthService} from "../../services/auth/auth.service";
 import {ComponentStore} from "@ngrx/component-store";
 import {concatMap, switchMap, withLatestFrom} from "rxjs/operators";
 import {of} from "rxjs";
+import firebase from "firebase/compat";
 
 @Component({
   selector: 'app-auth-dialog',
@@ -17,6 +18,7 @@ export class AuthDialogComponent implements OnInit {
 
   readonly email$ = this._componentStore.select(state => state.email);
   readonly password$ = this._componentStore.select(state => state.password);
+  readonly error$ = this._componentStore.select(state => state.error);
 
   readonly setEmail = this._componentStore.updater((state, email: any) => ({
     ...state,
@@ -28,23 +30,29 @@ export class AuthDialogComponent implements OnInit {
     password: password.target.value
   }));
 
+  readonly setError = this._componentStore.updater((state, error: any) => ({
+    ...state,
+    error: error
+  }));
+
   ngOnInit(): void {
     this._componentStore.setState({
       email: "",
-      password: ""
+      password: "",
+      error: null
     });
   }
 
   readonly signIn = this._componentStore.effect(action$ => action$.pipe(
     concatMap(() =>
       of(action$).pipe(
-        withLatestFrom(
-          this.email$,
-          this.password$)
+        withLatestFrom( this.email$, this.password$ )
       )
     ),
     switchMap(([, email, password]) => {
-      return this._authService.signIn(email, password)
+      return this._authService
+        .signIn(email, password)
+        .catch(e => this.setError(e))
     })
   ));
 
@@ -81,5 +89,6 @@ export class AuthDialogComponent implements OnInit {
 
 interface AuthDialogComponentStore {
   email: string,
-  password: string
+  password: string,
+  error: firebase.FirebaseError | null
 }
