@@ -1,15 +1,23 @@
-import { Injectable } from '@angular/core';
-import { Router } from "@angular/router";
-import { AngularFireAuth } from "@angular/fire/compat/auth";
-import { AngularFirestore } from "@angular/fire/compat/firestore";
+import {Injectable} from '@angular/core';
+import {Router} from "@angular/router";
+import {AngularFireAuth} from "@angular/fire/compat/auth";
+import {AngularFirestore} from "@angular/fire/compat/firestore";
 import firebase from "firebase/compat";
-import { BehaviorSubject } from "rxjs";
-import { RegisterDto } from "../../models/register.dto";
-import { AuthDto } from '../../models/auth.dto';
+import {getAuth} from 'firebase/auth';
+import {BehaviorSubject} from "rxjs";
+import {RegisterDto} from "../../models/register.dto";
+import {AuthDto} from '../../models/auth.dto';
+
 import UserCredential = firebase.auth.UserCredential;
 
-@Injectable()
+@Injectable({
+  providedIn: "root"
+})
 export class AuthService {
+
+  get isAuthorized(): boolean {
+    return (getAuth().currentUser !== null);
+  }
 
   errorSub$ = new BehaviorSubject(<firebase.FirebaseError>{
     code: "",
@@ -24,14 +32,6 @@ export class AuthService {
     private afAuth: AngularFireAuth,
     private authStore: AngularFirestore
   ) {
-    this.afAuth.authState.subscribe(user => {
-      if (user) {
-        this.userData = user;
-        localStorage.setItem("user", JSON.stringify(user));
-      } else {
-        localStorage.setItem("user", "");
-      }
-    });
   }
 
   signIn(auth: AuthDto) {
@@ -62,11 +62,10 @@ export class AuthService {
     this.afAuth.sendPasswordResetEmail(email);
   }
 
-  signOut() {
+  logout() {
     return this.afAuth.signOut()
       .then(() => {
-        localStorage.removeItem("user");
-        this.route.navigate(["timer"]);
+        this.route.navigate(["home"]);
       })
   }
 

@@ -1,7 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {MatDialog} from "@angular/material/dialog";
-import {AuthDialogComponent} from "../../../auth/components/auth-dialog/auth-dialog.component";
-import {RegisterDialogComponent} from "../../../auth/components/register-dialog/register-dialog.component";
+import {AuthService} from "../../../auth/services/auth/auth.service";
 
 @Component({
   selector: 'app-header',
@@ -10,19 +8,16 @@ import {RegisterDialogComponent} from "../../../auth/components/register-dialog/
 })
 export class HeaderComponent implements OnInit {
 
+  get isAuthorized(): boolean {
+    return this._authService.isAuthorized;
+  }
+
   constructor(
-    private _dialog: MatDialog,
+    private _authService: AuthService
   ) {
   }
 
   ngOnInit(): void {
   }
 
-  openAuthDialog() {
-    this._dialog.open(AuthDialogComponent);
-  }
-
-  openRegisterDialog() {
-    this._dialog.open(RegisterDialogComponent);
-  }
 }
