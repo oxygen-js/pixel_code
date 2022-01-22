@@ -16,21 +16,19 @@
 
   <div class="nes-field">
     <label for="email">Email</label>
-    <input type="email" id="email" class="nes-input" name="login" required [(ngModel)]="loginForm.email" #login="ngModel"/>
+    <input type="email" id="email" class="nes-input" name="login" required (keypress)="inputEmail($event)" />
   </div>
 
   <div class="nes-field">
     <label for="password">Password</label>
-    <input type="password" id="password" class="nes-input" name="password" required [(ngModel)]="loginForm.password" #password="ngModel"/>
+    <input type="password" id="password" class="nes-input" name="password" required (keypress)="inputPassword($event)"  />
   </div>
 
   <div class="buttons">
     <button class="nes-btn" (click)="closeDialog()"> Cancel</button>
     <button type="submit"
             class="nes-btn is-primary"
-            [class.is-disabled]="login.invalid || password.invalid"
-            [disabled]="login.invalid || password.invalid"
-            (click)="auth()">
+            (click)="signIn()">
       Sign in
     </button>
   </div>

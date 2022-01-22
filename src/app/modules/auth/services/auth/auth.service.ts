@@ -1,14 +1,15 @@
 import {Injectable} from '@angular/core';
 import {Router} from "@angular/router";
+import {MatDialog} from "@angular/material/dialog";
 import {AngularFireAuth} from "@angular/fire/compat/auth";
 import {AngularFirestore} from "@angular/fire/compat/firestore";
-import firebase from "firebase/compat";
-import {getAuth} from 'firebase/auth';
 import {BehaviorSubject} from "rxjs";
 import {RegisterDto} from "../../models/register.dto";
-import {AuthDto} from '../../models/auth.dto';
-
+import firebase from "firebase/compat";
+import {getAuth} from 'firebase/auth';
+import {AUTH_USER_CREDENTIAL_KEY} from "../../models/auth-user-credential";
 import UserCredential = firebase.auth.UserCredential;
+import {AuthErrorService} from "../auth-error/auth-error.service";
 
 @Injectable({
   providedIn: "root"
@@ -16,36 +17,39 @@ import UserCredential = firebase.auth.UserCredential;
 export class AuthService {
 
   get isAuthorized(): boolean {
-    return (getAuth().currentUser !== null);
+    const auth = getAuth();
+    return (auth.currentUser !== null);
   }
 
-  errorSub$ = new BehaviorSubject(<firebase.FirebaseError>{
+  errorSub$ = new BehaviorSubject(<firebase.FirebaseError> {
     code: "",
     name: 'FirebaseError',
     message: ""
   });
 
-  userData: firebase.User | undefined;
-
   constructor(
-    private route: Router,
-    private afAuth: AngularFireAuth,
-    private authStore: AngularFirestore
+    private _route: Router,
+    private _dialog: MatDialog,
+    private _afAuth: AngularFireAuth,
+    private _authStore: AngularFirestore,
+    private _authErrorService: AuthErrorService
   ) {
   }
 
-  signIn(auth: AuthDto) {
-    return this.afAuth.signInWithEmailAndPassword(auth.email, auth.password)
-      .then((result) => {
-        this.route.navigate(['calc']);
-        debugger;
-      })
-      .catch(error => {
-        console.error(error);
-      })
+  setUserCredential(user: UserCredential): void {
+    localStorage.setItem(AUTH_USER_CREDENTIAL_KEY, JSON.stringify(user));
+    this._dialog.closeAll();
+    this._route.navigate(['calc']).then(r => console.log("User sign in", r));
+  }
+
+  signIn(email: string, password: string) {
+    return this._afAuth.signInWithEmailAndPassword(email, password)
+      .then((user) => this.setUserCredential(user))
+      .catch(error => console.error(error));
   }
 
   signUp(auth: RegisterDto): Promise<UserCredential | void> | void {
+
     if (auth.password !== auth.confirmPassword) {
       return this.errorSub$.next({
         code: "password_mismatch",
@@ -53,19 +57,21 @@ export class AuthService {
         message: "Password mismatch"
       });
     }
-    return this.afAuth.createUserWithEmailAndPassword(auth.email, auth.password)
-      .then((res) => console.log("Created User (authService)", res))
+
+    return this._afAuth.createUserWithEmailAndPassword(auth.email, auth.password)
+      .then((user) => this.setUserCredential(user))
       .catch(error => this.errorSub$.next(error))
   }
 
   resetPassword(email: string): void {
-    this.afAuth.sendPasswordResetEmail(email);
+    this._afAuth.sendPasswordResetEmail(email);
   }
 
   logout() {
-    return this.afAuth.signOut()
+    return this._afAuth.signOut()
       .then(() => {
-        this.route.navigate(["home"]);
+        localStorage.removeItem("user_credential");
+        this._route.navigate(["home"]).then(r => console.log("User logout", r));
       })
   }
 
